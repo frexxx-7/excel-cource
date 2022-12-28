@@ -14,7 +14,7 @@ class Dom {
   }
 
   text(text) {
-    if (typeof text === 'string') {
+    if (typeof text !== 'undefined') {
       this.$el.textContent = text
       return this
     }
@@ -28,6 +28,7 @@ class Dom {
     this.html('')
     return this
   }
+
   on(eventType, callback) {
     this.$el.addEventListener(eventType, callback)
   }
@@ -50,6 +51,7 @@ class Dom {
     } else {
       this.$el.appendChild(node)
     }
+
     return this
   }
 
@@ -70,10 +72,18 @@ class Dom {
   }
 
   css(styles = {}) {
-    Object.keys(styles)
-        .forEach(key=>{
-          this.$el.style[key]=styles[key]
+    Object
+        .keys(styles)
+        .forEach(key => {
+          this.$el.style[key] = styles[key]
         })
+  }
+
+  getStyles(styles = []) {
+    return styles.reduce((res, s) => {
+      res[s] = this.$el.style[s]
+      return res
+    }, {})
   }
 
   id(parse) {
@@ -92,6 +102,14 @@ class Dom {
     return this
   }
 
+  attr(name, value) {
+    if (value) {
+      this.$el.setAttribute(name, value)
+      return this
+    }
+    return this.$el.getAttribute(name)
+  }
+
   addClass(className) {
     this.$el.classList.add(className)
     return this
@@ -107,7 +125,7 @@ export function $(selector) {
   return new Dom(selector)
 }
 
-$.create=(tagName, classes = '')=>{
+$.create = (tagName, classes = '') => {
   const el = document.createElement(tagName)
   if (classes) {
     el.classList.add(classes)
