@@ -1,8 +1,9 @@
 import {$} from '../core/dom'
-import {Page} from '../core/Page'
-import {createRecordsTable} from './dashboard.functions'
+import {Page} from '../core/page/Page'
+import {createRecordsTable} from '../shared/dashboard.functions'
 
 export class DashboardPage extends Page {
+  
   getRoot() {
     const now = Date.now().toString()
     return $.create('div', 'db').html(`
